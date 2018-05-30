@@ -1,0 +1,58 @@
+int x;
+int y;
+int grid = 20;
+void setup() {
+  size(400, 400);
+  x = 200;
+  y = 200;
+}
+int direction = 0;
+void draw() {
+  background(255, 255, 255);
+  if (keyPressed) {
+    if (key == 's' || key == 'S') {  // down
+      direction = 1;
+    } else if (key == 'w' || key == 'W') {  // up
+      direction = 2;
+    }
+    
+    if (key == 'd' || key == 'D') {  // right
+      direction = 3;
+    } else if (key == 'a' || key == 'A') {  // left
+      direction = 4;
+    }
+  }
+  if (direction == 0) {
+    x += 0; 
+  } else if (direction == 1) {
+   y+= 1;
+  } else if (direction == 2) {
+    y-= 1; 
+  } else if (direction == 3) {
+    x+= 1;
+  } else if (direction == 4) {
+    x-= 1; }
+  
+    if ((x > width) || (x < 0) || (y > height) || (y < 0)) {
+        background(255, 255 ,255);
+        textSize(32);
+        text("you died", 10, 30);
+        fill (0,102,153);
+        rect(x, y, 10, 10);
+        
+    } else {
+      fill (255, 255, 255);
+      println("");
+    }
+    for (int i = 0; i < width; i+=grid) { // draws the horizontal grid line
+  line (i, 0, i, height);
+}
+    for (int i = 0; i < height; i+=grid) { // draws the vertical grid line
+  line (0, i, width, i);
+      
+
+
+  
+  rect(x, y, 20, 20);
+  }
+}
