@@ -1,0 +1,103 @@
+
+int x;
+int y;
+int grid = 20;
+void setup() {
+  size(400, 400);
+  x = 200;
+  y = 200;
+}
+int speedCheck = 1;
+int foodExists = 1;
+int foodLocX = (int) random(20) * 20;
+int foodLocY = (int) random(20) * 20;
+int direction = 0;
+int speedMod = 1;
+void draw() {
+  background(255, 255, 255);
+  if (keyPressed) {
+    if (key == 's' || key == 'S') {  // down
+      direction = 1;
+    } else if (key == 'w' || key == 'W') {  // up
+      direction = 2;
+    }
+    
+    if (key == 'd' || key == 'D') {  // right
+      direction = 3;
+    } else if (key == 'a' || key == 'A') {  // left
+      direction = 4;
+    }
+  }
+  if (direction == 0) {
+    x += 0; 
+  } else if (direction == 1) {
+   y+= 20 * speedMod;
+  } else if (direction == 2) {
+    y-= 20 * speedMod; 
+  } else if (direction == 3) {
+    x+= 20 * speedMod;
+  } else if (direction == 4) {
+    x-= 20 * speedMod; }
+  
+    if ((x > width) || (x < 0) || (y > height) || (y < 0)) {
+        background(255, 255 ,255);
+        textSize(32);
+        text("you died", 10, 30);
+        fill (0,102,153);
+        rect(x, y, 10, 10);
+        
+    } else {
+      fill (255, 255, 255);
+      println("");
+    }
+    for (int i = 0; i < width; i+=grid) { // draws the horizontal grid line
+  line (i, 0, i, height);
+}
+    for (int i = 0; i < height; i+=grid) { // draws the vertical grid line
+  line (0, i, width, i);
+      
+
+
+  fill(90, 20, 90);
+  rect(x, y, 20, 20);
+  fill(20, 40, 1);
+  rect (foodLocX, foodLocY, 10, 10);
+  
+  println(x <= foodLocX + 9 && x >= foodLocX - 9 && y <= foodLocY + 9 && y >= - 9);
+  
+  if (x <= foodLocX + 10 && x >= foodLocX - 10 && y <= foodLocY + 10 && y >= foodLocY - 10) {
+    println("hello");
+    foodLocX = (int) random(20) * 20;
+    foodLocY = (int) random(20) * 20;
+  }
+  if (speedCheck == 1) {
+  speedCheck = 2;
+  speedMod = 0;
+  } else if (speedCheck == 2) {
+    speedCheck = 3;
+    speedMod = 0;
+  } else if (speedCheck == 3) {
+    speedCheck = 4;
+    speedMod = 0;
+  }else if (speedCheck == 4) {
+    speedCheck = 5;
+    speedMod = 0;
+  } else if (speedCheck == 5) {
+    speedCheck = 6;
+    speedMod = 0;
+  } else if (speedCheck == 6) {
+    speedCheck = 7;
+    speedMod = 0;
+  } else if (speedCheck == 7) {
+    speedCheck = 8;
+    speedMod = 0;
+  }else if (speedCheck == 8) {
+    speedCheck = 9;
+    speedMod = 0;
+  } else if (speedCheck == 9) {
+    speedCheck = 1;
+    speedMod = 1;
+  }
+    
+}
+}
