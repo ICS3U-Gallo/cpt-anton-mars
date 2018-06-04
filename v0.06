@@ -1,0 +1,106 @@
+int x;
+int y;
+int grid = 20;
+void setup() {
+  size(400, 400);
+  x = 200;
+  y = 200;
+}
+int speedCheck = 1;
+int foodExists = 1;
+int foodLocX = (int) random(20) * 20;
+int foodLocY = (int) random(20) * 20;
+int direction = 0;
+int speedMod = 9;
+int poisonLocX = (int) random(20) * 20;
+int poisonLocY = (int) random(20) * 20;
+int poisonLevel;
+boolean alive = true;
+void draw() {
+  background(255, 255, 255);
+  if (keyPressed) {
+    if (key == 's' || key == 'S') {  // down
+      direction = 1;
+    } else if (key == 'w' || key == 'W') {  // up
+      direction = 2;
+    }
+    
+    if (key == 'd' || key == 'D') {  // right
+      direction = 3;
+    } else if (key == 'a' || key == 'A') {  // left
+      direction = 4;
+    }
+  }
+  if (direction == 0) {
+  textSize(32);
+  text("WASD to move", 100,200);
+  }
+  
+
+  if (frameCount % speedMod == 0) {
+  if (direction == 0) {
+    x += 0; 
+  } else if (direction == 1 && alive == true) {
+    y += 20;
+  } else if (direction == 2 && alive == true) {
+    y -= 20; 
+  } else if (direction == 3 && alive == true) {
+    x += 20;
+  } else if (direction == 4 && alive == true) {
+    x -= 20; 
+  }  
+}
+  
+  
+  
+ 
+  if ((x > width) || (x < 0) || (y > height) || (y < 0)) { //boundary to die
+      alive = false;
+      background(255, 255, 255);
+      textSize(32);
+      text("you died", 10, 30);
+      textSize(16);
+      text("PRESS C TO PLAY AGAIN", 200, 200); //restart game
+      if (key=='c') {
+        alive = true;
+        direction = 0;
+        setup();
+        draw();
+      }
+  }
+        
+  for (int i = 0; i < width; i+=grid) { // draws the horizontal grid line
+    line (i, 0, i, height);
+  }
+  for (int i = 0; i < height; i+=grid) { // draws the vertical grid line
+    line (0, i, width, i);
+  }
+      
+
+
+  fill(90, 20, 90);
+  rect(x, y, 20, 20);
+  fill(20, 40, 1);
+  rect (foodLocX, foodLocY, 10, 10);
+  
+  println(x <= foodLocX + 9 && x >= foodLocX - 9 && y <= foodLocY + 9 && y >= - 9);
+  
+  if (x <= foodLocX + 10 && x >= foodLocX - 10 && y <= foodLocY + 10 && y >= foodLocY - 10) {
+    foodLocX = (int) random(20) * 20;
+    foodLocY = (int) random(20) * 20;
+  }
+  fill(99, 2, 199); 
+  rect (poisonLocX, poisonLocY, 10, 10);
+  if (x <= poisonLocX + 10 && x >= poisonLocX - 10 && y <= poisonLocY + 10 && y >= poisonLocY - 10) {
+    poisonLocX = (int) random(20) * 20;
+    poisonLocY = (int) random(20) * 20;
+    poisonLevel = 100;
+    
+  }
+  if (poisonLevel > 1) {
+    poisonLevel = poisonLevel - 1;
+    speedMod = 3;
+  } else if (poisonLevel == 1) {
+    speedMod = 9;
+  }
+}
