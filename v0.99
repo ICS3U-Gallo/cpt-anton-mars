@@ -1,3 +1,5 @@
+int Max = 50;
+int snakeSize = 1;
 int[] x = new int[400];
 int[] y = new int[400];
 int grid = 20;
