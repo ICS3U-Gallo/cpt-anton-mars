@@ -1,0 +1,164 @@
+int Max = 50;
+int snakeSize = 1;
+int[] x = new int[400];
+int[] y = new int[400];
+int grid = 20;
+int poisonLevel;
+void setup() {
+  size(400, 400);
+  snakeSize = 1;
+  x[0] = 200;
+  y[0] = 200;
+  poisonLevel = 1;
+}
+
+
+int speedCheck = 1;
+int foodExists = 1;
+int foodLocX = (int) random(20) * 20;
+int foodLocY = (int) random(20) * 20; //randomize food location
+int direction = 0;
+int speedMod = 9;
+int poisonLocX = (int) random(20) * 20;
+int poisonLocY = (int) random(20) * 20;
+boolean alive = true;
+boolean gamestart = false;
+void draw() {
+  if (!gamestart) {
+    background(255, 255, 255);
+    fill(255 , 255, 255);
+    rectMode(CENTER);
+    rect(200, 200, 300, 300);
+    textSize(32);
+    textAlign(CENTER);
+    fill(#454545);
+    text("PRESS P TO START!", 200, 200);
+    if (key=='p' || key=='P') {
+      gamestart = true;
+    }
+  } else {
+    background(255, 255, 255);
+  
+    if (keyPressed) {
+      if (key == 's' || key == 'S') {  // down
+        direction = 1;
+      } else if (key == 'w' || key == 'W') {  // up
+        direction = 2;
+      }
+      
+      if (key == 'd' || key == 'D') {  // right
+        direction = 3;
+      } else if (key == 'a' || key == 'A') {  // left
+        direction = 4;
+      }
+    } //key input checks for four cardinal directions
+    if (direction == 0) {
+      textSize(32);
+      text("WASD to move", 100,200);
+    } //starting information
+    
+  
+    
+    
+    
+  
+    if (snakeSize >= Max) {
+      direction = 0;
+      textSize(32);
+      text("You Win! Hurrah!", 10, 30);
+      text("Press C to play again", 20, 80);
+      if (key=='c' || key=='C') {
+          alive = true;
+          direction = 0;
+          setup();
+          draw();
+        }
+    } else if (frameCount % speedMod == 0) { //decides current speed
+      moveSnake(direction);
+    }
+  
+    if ((x[0] >= width) || (x[0] < 0) || (y[0] >= height) || (y[0] < 0)) { //boundary to die
+      snakeDed(); //tests for death conditions of hitting an obstacle
+    }     //then it gives option to play again
+    else{
+      for (int i = 1; i < snakeSize; i++){
+        if (x[0] == x[i] && y[0] == y[i]) {
+          snakeDed();
+        }
+      }
+    }
+    
+    for (int i = 0; i < width; i+=grid) { // draws the horizontal grid line
+      line (i, 0, i, height);
+    }
+    for (int i = 0; i < height; i+=grid) { // draws the vertical grid line
+      line (0, i, width, i);
+    }
+        
+  
+  
+    fill(90, 20, 90);
+    for(int i = 0; i < snakeSize; i++) {
+      rect(x[i], y[i], 20, 20); //draws the head
+    }
+    
+    fill(20, 40, 1);
+    rect (foodLocX, foodLocY, 10, 10); //draws the food
+  
+    
+    if (x[0] <= foodLocX + 10 && x[0] >= foodLocX - 10 && y[0] <= foodLocY + 10 && y[0] >= foodLocY - 10) {
+      foodLocX = (int) random(20) * 20;
+      foodLocY = (int) random(20) * 20;
+      snakeSize++;
+    } //tests for if you ate the food
+    fill(99, 2, 199); 
+    rect (poisonLocX, poisonLocY, 10, 10); //draws poison
+    if (x[0] <= poisonLocX + 10 && x[0] >= poisonLocX - 10 && y[0] <= poisonLocY + 10 && y[0] >= poisonLocY - 10) {
+      poisonLocX = (int) random(20) * 20;
+      poisonLocY = (int) random(20) * 20;
+      poisonLevel = 100; //tests for if you ate poison
+      
+    }
+    if (poisonLevel > 1) { //tests for how much poison remains
+      poisonLevel = poisonLevel - 1; //if it is more than one it is reduced
+      speedMod = 3; //if it is more than one you go faster
+    } else if (poisonLevel == 1) { 
+      speedMod = 9; //if poison level is one, you return to normal speed
+    }
+  }
+}
+
+
+void moveSnake(int dir){
+
+  for(int i = snakeSize - 1; i > 0; i--){
+    x[i] = x[i-1];
+    y[i] = y[i-1];
+  }
+  if (dir == 0) {
+  //starting direction of nowhere
+  } else if (dir == 1 && alive == true) {
+    y[0] += 20;
+  } else if (dir == 2 && alive == true) {
+    y[0] -= 20; 
+  } else if (dir == 3 && alive == true) {
+    x[0] += 20;
+  } else if (dir == 4 && alive == true) {
+    x[0] -= 20; 
+  }  //these test for current direction and if you are alive, then moves you
+}
+
+void snakeDed() {
+      alive = false;
+      background(255, 255, 255);
+      textSize(32);
+      text("you died", 10, 30);
+      textSize(16);
+      text("PRESS C TO PLAY AGAIN", 200, 200); //restart game
+      if (key=='c') {
+        alive = true;
+        direction = 0;
+        setup();
+        draw();
+      }
+}
