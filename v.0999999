@@ -10,10 +10,10 @@ void setup() {
   x[0] = 200;
   y[0] = 200;
   poisonLevel = 1;
-}
+} //here we have the basic variable for making the snake, it's head, it's body blocks, an integer for a poison level
+  //as well as the setup that makes the snake go back to it's initial size.
 
 
-int speedCheck = 1;
 int foodExists = 1;
 int foodLocX = (int) random(20) * 20;
 int foodLocY = (int) random(20) * 20; //randomize food location
@@ -22,7 +22,7 @@ int speedMod = 9;
 int poisonLocX = (int) random(20) * 20;
 int poisonLocY = (int) random(20) * 20;
 boolean alive = true;
-boolean gamestart = false;
+boolean gamestart = false; //here we have some more variables like the location of food, the speed modifier, etc.
 void draw() {
   if (!gamestart) {
     background(255, 255, 255);
@@ -35,7 +35,7 @@ void draw() {
     text("PRESS P TO START!", 200, 200);
     if (key=='p' || key=='P') {
       gamestart = true;
-    }
+    } //here we have the menu
   } else {
     background(255, 255, 255);
   
@@ -56,7 +56,7 @@ void draw() {
       textSize(32);
       text("WASD to move", 200, 200);
       textAlign(CENTER);
-    } //starting information
+    } //starting information of pressing W, A, S, or D to move as well as checking key input to detect desired direction
     
   
     
@@ -69,14 +69,14 @@ void draw() {
       text("You Win! Hurrah!", 10, 30);
       text("Press C to play again", 20, 80);
       textAlign(CENTER);
-      if (key=='c' || key=='C') {
+      if (key=='c' || key=='C') { //here there is one condition for victory, if you reach the max size of the snake
           alive = true;
           direction = 0;
           setup();
           draw();
         }
-    } else if (frameCount % speedMod == 0) { //decides current speed
-      moveSnake(direction);
+    } else if (frameCount % speedMod == 0) { //decides current speed, with speedmod being the amount of frames it waits before
+      moveSnake(direction);                 //moving again
     }
   
     if ((x[0] >= width) || (x[0] < 0) || (y[0] >= height) || (y[0] < 0)) { //boundary to die
@@ -85,14 +85,14 @@ void draw() {
     else{
       for (int i = 1; i < snakeSize; i++){
         if (x[0] == x[i] && y[0] == y[i]) {
-          snakeDed();
+          snakeDed(); //tests to see if you hit yourself, to subsequently die if you did
         }
       }
     }
     
     for (int i = 0; i < width; i+=grid) { // draws the horizontal grid line
-      line (i, 0, i, height);
-    }
+      line (i, 0, i, height); 
+    } //the grid is made here
     for (int i = 0; i < height; i+=grid) { // draws the vertical grid line
       line (0, i, width, i);
     }
@@ -112,20 +112,20 @@ void draw() {
       foodLocX = (int) random(20) * 20;
       foodLocY = (int) random(20) * 20;
       snakeSize++;
-    } //tests for if you ate the food
+    } //tests for if you ate the food, adding size and spawning new food if you did
     fill(99, 2, 199); 
     rect (poisonLocX, poisonLocY, 10, 10); //draws poison
     if (x[0] <= poisonLocX + 10 && x[0] >= poisonLocX - 10 && y[0] <= poisonLocY + 10 && y[0] >= poisonLocY - 10) {
       poisonLocX = (int) random(20) * 20;
       poisonLocY = (int) random(20) * 20;
-      poisonLevel = 100; //tests for if you ate poison
+      poisonLevel = 100; //tests for if you ate poison, spawning new poison if you did
       
     }
     if (poisonLevel > 1) { //tests for how much poison remains
-      poisonLevel = poisonLevel - 1; //if it is more than one it is reduced
+      poisonLevel = poisonLevel - 1; //if it is more than one it is reduced until it reaches one
       speedMod = 3; //if it is more than one you go faster
     } else if (poisonLevel == 1) { 
-      speedMod = 9; //if poison level is one, you return to normal speed
+      speedMod = 9; //if poison level is one, you return to normal speed and absence of poison
     }
   }
 }
@@ -135,7 +135,7 @@ void moveSnake(int dir){
 
   for(int i = snakeSize - 1; i > 0; i--){
     x[i] = x[i-1];
-    y[i] = y[i-1];
+    y[i] = y[i-1]; //allows for the movement of the snake by making each part what the next part was a moment ago
   }
   if (dir == 0) {
   //starting direction of nowhere
@@ -147,7 +147,7 @@ void moveSnake(int dir){
     x[0] += 20;
   } else if (dir == 4 && alive == true) {
     x[0] -= 20; 
-  }  //these test for current direction and if you are alive, then moves you
+  }  //these test for current direction and if you are alive, then moves the head
 }
 
 void snakeDed() {
@@ -162,5 +162,5 @@ void snakeDed() {
         direction = 0;
         setup();
         draw();
-      }
+      } //the death of our snake
 }
